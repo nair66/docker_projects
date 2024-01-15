@@ -1,0 +1,47 @@
+version: "3.8"
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/src:/app/src
+    stdin_open: true
+    tty: true
+    depends_on:
+      - backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - logs:/app/logs
+      - ./backend:/app
+      - /app/node_modules
+    environment:
+      - MONGODB_USERNAME=mongouser
+      - MONGODB_PASSWORD=secret
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: "mongo"
+    volumes:
+      - data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongouser
+      - MONGO_INITDB_ROOT_PASSWORD=secret
+    container_name: mongodb
+    # env_file:
+    #   - ./env/mongo.env
+    # networks:
+    # - my-net
+
+#All named volumes additionally have to be spcified below like this. Anony and bind mounts need not specify
+volumes:
+  data:
+  logs:
