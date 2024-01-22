@@ -1,0 +1,17 @@
+#Persistent volumes
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: host-pv
+spec:
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce #  R/W by multiple pods in a same node.
+    # - ReadOnlyMany R only by multiple pods in diff nodes.
+    # - ReadWriteMany  R/W by multiple pods in diff nodes.
+  hostPath: #We are using persistent volume hostPath as demo. Though it behaves same as the normal volume hostPath.
+    path: /my-data
+    type: DirectoryOrCreate
