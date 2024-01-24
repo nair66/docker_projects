@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: users
+  template:
+    metadata:
+      labels:
+        app: users
+    spec:
+      containers:
+        - name: users
+          image: adityanair006/kub-net-users:latest
+          env:
+            - name: AUTH_ADDRESS
+              # value: "10.96.131.1" $Using IP address of the service which was obtained from the terminal
+              value: "auth-service.default" # Using internal DNS

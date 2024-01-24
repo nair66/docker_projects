@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  selector: #Api version only supports matchLabels so don;t have to explicitly specify it here.
+    app: frontend
+  type: LoadBalancer #Cluster IP:  default, only internal service with load balancing, NodePort : Reachable by outside but using Node's IP address, LoadBalancer : reachable from outside via exposing and IP address and auto distributes incoming requests between nodes/ pods.
+  ports:
+    - protocol: TCP
+      port: 80 #Port from outside
+      targetPort: 80 # Port used in app
